@@ -1,0 +1,4 @@
+.env
+recruitment_data.json
+__pycache__/
+*.pyc

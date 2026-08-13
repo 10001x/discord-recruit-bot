@@ -1,0 +1,112 @@
+import os
+
+import discord
+from discord.ext import commands
+from dotenv import load_dotenv
+
+
+# =========================================================
+# ENV
+# =========================================================
+
+load_dotenv()
+
+TOKEN = os.getenv("DISCORD_TOKEN")
+
+if not TOKEN:
+    raise RuntimeError(
+        "❌ DISCORD_TOKEN não foi encontrado no .env"
+    )
+
+
+# =========================================================
+# INTENTS
+# =========================================================
+
+intents = discord.Intents.default()
+intents.guilds = True
+intents.members = True
+
+
+# =========================================================
+# BOT
+# =========================================================
+
+bot = commands.Bot(
+    command_prefix="/",
+    intents=intents
+)
+
+
+# =========================================================
+# LOAD COGS
+# =========================================================
+
+async def load_cogs():
+
+    for filename in os.listdir("./cogs"):
+
+        if filename.endswith(".py") and not filename.startswith("_"):
+
+            try:
+
+                await bot.load_extension(
+                    f"cogs.{filename[:-3]}"
+                )
+
+                print(f"✅ Loaded: {filename}")
+
+            except Exception as e:
+
+                print(f"❌ Erro ao carregar {filename}: {e}")
+
+
+# =========================================================
+# SETUP HOOK
+# =========================================================
+
+@bot.event
+async def setup_hook():
+
+    print("🔄 A carregar cogs...")
+
+    await load_cogs()
+
+    print("✅ Todos os cogs foram carregados.")
+
+
+# =========================================================
+# READY
+# =========================================================
+
+@bot.event
+async def on_ready():
+
+    print()
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print(f"✅ Bot online: {bot.user}")
+    print(f"🆔 Bot ID: {bot.user.id}")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+    try:
+
+        synced = await bot.tree.sync()
+
+        print(
+            f"✅ {len(synced)} slash commands sincronizados."
+        )
+
+    except Exception as e:
+
+        print(
+            f"❌ Erro ao sincronizar comandos: {e}"
+        )
+
+
+# =========================================================
+# START
+# =========================================================
+
+print("🚀 A iniciar o Hustler Bot...")
+
+bot.run(TOKEN)
