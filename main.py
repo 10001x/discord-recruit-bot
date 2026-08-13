@@ -10,9 +10,37 @@ from discord.ext import commands
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 
+print("========================================")
+print("RAILWAY ENV DEBUG")
+print("========================================")
+
+print(
+    "DISCORD_TOKEN existe:",
+    TOKEN is not None
+)
+
+print(
+    "DISCORD_TOKEN vazio:",
+    not bool(TOKEN)
+)
+
+if TOKEN:
+    print(
+        "Token começa por:",
+        TOKEN[:5]
+    )
+
+    print(
+        "Token termina em:",
+        TOKEN[-5:]
+    )
+
+print("========================================")
+
+
 if not TOKEN:
     raise RuntimeError(
-        "❌ DISCORD_TOKEN não foi encontrado nas variáveis de ambiente."
+        "❌ DISCORD_TOKEN não chegou ao container da Railway."
     )
 
 
@@ -52,7 +80,9 @@ async def load_cogs():
                     f"cogs.{filename[:-3]}"
                 )
 
-                print(f"✅ Loaded: {filename}")
+                print(
+                    f"✅ Loaded: {filename}"
+                )
 
             except Exception as e:
 
@@ -68,11 +98,15 @@ async def load_cogs():
 @bot.event
 async def setup_hook():
 
-    print("🔄 A carregar cogs...")
+    print(
+        "🔄 A carregar cogs..."
+    )
 
     await load_cogs()
 
-    print("✅ Todos os cogs foram carregados.")
+    print(
+        "✅ Todos os cogs foram carregados."
+    )
 
 
 # =========================================================
@@ -83,10 +117,22 @@ async def setup_hook():
 async def on_ready():
 
     print()
-    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-    print(f"✅ Bot online: {bot.user}")
-    print(f"🆔 Bot ID: {bot.user.id}")
-    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+    print(
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    )
+
+    print(
+        f"✅ Bot online: {bot.user}"
+    )
+
+    print(
+        f"🆔 Bot ID: {bot.user.id}"
+    )
+
+    print(
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    )
 
     try:
 
@@ -107,6 +153,8 @@ async def on_ready():
 # START
 # =========================================================
 
-print("🚀 A iniciar o Hustler Bot...")
+print(
+    "🚀 A iniciar o Hustler Bot..."
+)
 
 bot.run(TOKEN)
