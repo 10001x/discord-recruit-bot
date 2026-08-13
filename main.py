@@ -2,20 +2,17 @@ import os
 
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
 
 
 # =========================================================
-# ENV
+# ENVIRONMENT VARIABLES
 # =========================================================
-
-load_dotenv()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 if not TOKEN:
     raise RuntimeError(
-        "❌ DISCORD_TOKEN não foi encontrado no .env"
+        "❌ DISCORD_TOKEN não foi encontrado nas variáveis de ambiente."
     )
 
 
@@ -24,6 +21,7 @@ if not TOKEN:
 # =========================================================
 
 intents = discord.Intents.default()
+
 intents.guilds = True
 intents.members = True
 
@@ -58,7 +56,9 @@ async def load_cogs():
 
             except Exception as e:
 
-                print(f"❌ Erro ao carregar {filename}: {e}")
+                print(
+                    f"❌ Erro ao carregar {filename}: {e}"
+                )
 
 
 # =========================================================
